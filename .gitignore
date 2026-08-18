@@ -1,0 +1,70 @@
+# Office OS — Git ignore
+
+# ─── Secrets & Environment ────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+
+# ─── Node ────────────────────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ─── Database ─────────────────────────────────────────────────────────────────
+*.sqlite
+*.db
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+# (docker-compose.yml IS committed — only override files are ignored)
+docker-compose.override.yml
+
+# ─── Storage & Uploads ────────────────────────────────────────────────────────
+storage/
+uploads/
+backups/
+logs/
+**/storage/
+**/uploads/
+**/backups/
+**/logs/
+
+# ─── AI Models (too large for git) ────────────────────────────────────────────
+ai/models/
+**/models/
+
+# ─── IDE ─────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Certificates ────────────────────────────────────────────────────────────
+*.pem
+*.key
+*.crt
+*.csr
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
