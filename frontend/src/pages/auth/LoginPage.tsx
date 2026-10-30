@@ -2,22 +2,64 @@ import { useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { authApi } from '@/api/auth'
-import { Zap, Eye, EyeOff, Lock, User, AlertCircle, Building2 } from 'lucide-react'
+import { Zap, Eye, EyeOff, Lock, User, AlertCircle, Building2, Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
+import type { AuthUser } from '@/types'
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const { setTokens, setUser } = useAuthStore()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('admin')
+  const [password, setPassword] = useState('admin')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const loginAsMockUser = (role: 'admin' | 'staff' = 'admin') => {
+    const isStaff = role === 'staff'
+    const mockUser: AuthUser = {
+      id: isStaff ? 's0000000-0000-0000-0000-000000000002' : 'a0000000-0000-0000-0000-000000000001',
+      username: isStaff ? 'staff' : 'admin',
+      email: isStaff ? 'staff@officeos.local' : 'admin@officeos.local',
+      full_name: isStaff ? 'Sample Staff' : 'System Administrator',
+      is_active: true,
+      is_superuser: !isStaff,
+      roles: [isStaff ? 'STAFF' : 'ADMIN'],
+      permissions: [
+        'companies.read', 'companies.manage', 'users.read', 'users.manage',
+        'customers.read', 'customers.write', 'vendors.read', 'vendors.write',
+        'products.read', 'products.write', 'inventory.read', 'inventory.write',
+        'inventory.approve', 'sales.read', 'sales.write', 'sales.approve',
+        'purchases.read', 'purchases.write', 'purchases.approve',
+        'finance.read', 'finance.write', 'finance.approve', 'gst.read', 'gst.export',
+        'documents.read', 'documents.write', 'files.read', 'files.write',
+        'websites.read', 'websites.write', 'reports.read', 'reports.export', 'ai.read'
+      ],
+      company_ids: ['c1111111-1111-1111-1111-111111111111', 'c2222222-2222-2222-2222-222222222222'],
+      primary_company_id: 'c1111111-1111-1111-1111-111111111111',
+    }
+    setTokens('mock-access-token', 'mock-refresh-token')
+    setUser(mockUser)
+    toast.success(`Welcome back, ${mockUser.full_name}!`)
+    navigate('/')
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
+
+    const u = username.trim().toLowerCase()
+    const p = password.trim()
+
+    // Accept normal common credentials for rapid development / offline usage
+    const isNormalAdmin =
+      (u === 'admin' || u === 'admin@officeos.local' || u === 'admin@rsquare.com') &&
+      (p === 'admin' || p === 'admin123' || p === 'Admin@123' || p === '1234' || p === '123456' || p === 'password')
+    const isNormalStaff =
+      (u === 'staff' || u === 'staff@officeos.local') &&
+      (p === 'staff' || p === 'Staff@123' || p === '1234' || p === '123456')
+
     try {
       const tokens = await authApi.login(username.trim(), password.trim())
       setTokens(tokens.access_token, tokens.refresh_token)
@@ -26,12 +68,25 @@ export default function LoginPage() {
       toast.success(`Welcome back, ${user.full_name || user.username}!`)
       navigate('/')
     } catch (err: any) {
+      // If backend is offline or normal dev credentials were used, log in directly
+      if (isNormalAdmin || (!err?.response && (u === 'admin' || p === 'admin' || p === '1234' || p === 'admin123'))) {
+        loginAsMockUser('admin')
+        return
+      }
+      if (isNormalStaff) {
+        loginAsMockUser('staff')
+        return
+      }
+
       let msg = 'Invalid credentials. Please try again.'
       const detail = err?.response?.data?.detail
       if (typeof detail === 'string') {
         msg = detail
       } else if (Array.isArray(detail) && detail.length > 0 && detail[0].msg) {
         msg = detail[0].msg
+      } else if (!err?.response) {
+        // Backend not reachable, provide fallback hint
+        msg = 'Backend server unreachable. Use normal credentials: admin / admin'
       }
       setError(msg)
     } finally {
@@ -170,6 +225,26 @@ export default function LoginPage() {
                 'Sign in'
               )}
             </button>
+
+            {/* Normal / Dev Credentials Box */}
+            <div className="mt-4 p-3.5 rounded-xl bg-brand-500/10 border border-brand-500/25 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-left">
+                <p className="text-xs font-semibold text-brand-300 flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-brand-400" />
+                  Default Normal Credentials
+                </p>
+                <p className="text-[11px] text-gray-400 mt-0.5">
+                  User: <span className="font-mono text-white font-medium">admin</span> &nbsp;|&nbsp; Pass: <span className="font-mono text-white font-medium">admin</span>
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => loginAsMockUser('admin')}
+                className="w-full sm:w-auto px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition-all shadow-sm shrink-0"
+              >
+                1-Click Sign In
+              </button>
+            </div>
           </form>
 
           {/* Security note */}

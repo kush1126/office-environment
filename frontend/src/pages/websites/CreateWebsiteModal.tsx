@@ -10,9 +10,11 @@ interface CreateWebsiteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess: () => void;
+  companyId?: string;
+  companyName?: string;
 }
 
-export function CreateWebsiteModal({ open, onOpenChange, onSuccess }: CreateWebsiteModalProps) {
+export function CreateWebsiteModal({ open, onOpenChange, onSuccess, companyId, companyName }: CreateWebsiteModalProps) {
   const [loading, setLoading] = useState(false);
 
   // Form State
@@ -32,14 +34,15 @@ export function CreateWebsiteModal({ open, onOpenChange, onSuccess }: CreateWebs
     try {
       setLoading(true);
       await createWebsite({
+        company_id: companyId,
         name,
         domain,
         tech_stack: techStack,
         repository_url: repositoryUrl,
         status
-      });
+      } as any);
       
-      toast.success('Website added successfully');
+      toast.success(`Website added for ${companyName || 'company'}`);
       onSuccess();
       onOpenChange(false);
       

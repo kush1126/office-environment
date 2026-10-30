@@ -31,8 +31,9 @@ const WebsiteManagerPage = lazy(() => import('@/pages/websites/WebsiteManagerPag
 // Phase 6: Email
 const EmailClientPage = lazy(() => import('@/pages/email/EmailClientPage'))
 
-// Phase 7: AI Assistant
+// Phase 7: AI Assistant & Image Studio
 const AIAssistantPage = lazy(() => import('@/pages/ai/AIAssistantPage'))
+const AIImageStudioPage = lazy(() => import('@/pages/ai/AIImageStudioPage'))
 
 // ─── Protected Route ──────────────────────────────────────────────────────────
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -112,17 +113,17 @@ export function AppRouter() {
 
         {/* Phase 5 modules: Files & Websites */}
         <Route path="files"       element={<Suspense fallback={<PageLoader />}><DocumentsPage /></Suspense>} />
+        <Route path="documents"   element={<Suspense fallback={<PageLoader />}><DocumentsPage /></Suspense>} />
         <Route path="websites"    element={<Suspense fallback={<PageLoader />}><WebsiteManagerPage /></Suspense>} />
 
         {/* Phase 6 & 7 modules: Email, Analytics, AI */}
         <Route path="email"       element={<Suspense fallback={<PageLoader />}><EmailClientPage /></Suspense>} />
         <Route path="ai"          element={<Suspense fallback={<PageLoader />}><AIAssistantPage /></Suspense>} />
+        <Route path="ai/images"   element={<Suspense fallback={<PageLoader />}><AIImageStudioPage /></Suspense>} />
 
         {/* Phase 8+ modules — placeholders */}
-        <Route path="documents"   element={<ComingSoon module="Documents" />} />
         <Route path="deployments" element={<ComingSoon module="Deployments" />} />
         <Route path="reports"     element={<ComingSoon module="Reports" />} />
-        <Route path="ai"          element={<ComingSoon module="AI Assistant" />} />
         <Route path="ai/alerts"   element={<ComingSoon module="AI Alerts" />} />
         <Route path="ai/training" element={<ComingSoon module="AI Training Center" />} />
         <Route path="audit"       element={<ComingSoon module="Audit Logs" />} />

@@ -66,6 +66,8 @@ export interface Product {
   has_expiry: boolean;
   has_serial_numbers: boolean;
   image_url?: string;
+  price?: number;
+  tax_rate?: number;
   min_stock?: number;
   max_stock?: number;
   reorder_level?: number;
@@ -326,6 +328,7 @@ export interface WebsiteDeployment {
   website_id: string;
   version: string;
   status: string;
+  environment?: string;
   notes?: string;
   deployed_at: string;
   deployed_by?: string;
@@ -340,6 +343,8 @@ export interface Website {
   repository_url?: string;
   status: string;
   deployments: WebsiteDeployment[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 // --- Email ---

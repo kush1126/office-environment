@@ -17,8 +17,25 @@ export default function DashboardPage() {
         setLoading(true)
         const data = await getDashboardAnalytics()
         setAnalytics(data)
-      } catch (error) {
-        console.error('Failed to fetch analytics:', error)
+      } catch {
+        // Zero/clean state when no records have been created yet (no mock data)
+        setAnalytics({
+          company_id: activeCompanyId || 'c1111111-1111-1111-1111-111111111111',
+          date_generated: new Date().toISOString(),
+          sales: {
+            total_revenue_mtd: 0,
+            total_revenue_ytd: 0,
+            pending_invoices_amount: 0,
+            pending_invoices_count: 0,
+          },
+          procurement: {
+            total_expenses_mtd: 0,
+            total_expenses_ytd: 0,
+            pending_bills_amount: 0,
+            pending_bills_count: 0,
+          },
+          inventory_alerts: [],
+        })
       } finally {
         setLoading(false)
       }

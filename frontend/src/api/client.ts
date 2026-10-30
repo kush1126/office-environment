@@ -79,9 +79,9 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // Show error toast for non-auth errors
-    if (error.response?.status !== 401) {
-      let message = 'An error occurred'
+    // Show error toast only when backend returns a specific error message
+    if (error.response && error.response.status !== 401 && error.response.status !== 502 && error.response.status !== 504) {
+      let message = ''
       const data = error.response?.data as any
       if (data) {
         if (Array.isArray(data.detail) && data.detail.length > 0 && data.detail[0].msg) {
@@ -96,7 +96,9 @@ apiClient.interceptors.response.use(
           message = data.message
         }
       }
-      toast.error(message, { duration: 4000 })
+      if (message) {
+        toast.error(message, { duration: 4000 })
+      }
     }
 
     return Promise.reject(error)

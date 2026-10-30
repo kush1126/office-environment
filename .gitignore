@@ -42,14 +42,27 @@ storage/
 uploads/
 backups/
 logs/
+documents/
+company_data/
 **/storage/
 **/uploads/
 **/backups/
 **/logs/
+**/documents/
 
-# ─── AI Models (too large for git) ────────────────────────────────────────────
+# ─── AI Models & Vector Stores (Local Weights & Embeddings) ───────────────────
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
 ai/models/
-**/models/
+models/weights/
+chroma/
+vector_store/
+embeddings/
+*.duckdb
 
 # ─── IDE ─────────────────────────────────────────────────────────────────────
 .vscode/
@@ -59,7 +72,7 @@ ai/models/
 .DS_Store
 Thumbs.db
 
-# ─── Certificates ────────────────────────────────────────────────────────────
+# ─── Certificates & Keys ──────────────────────────────────────────────────────
 *.pem
 *.key
 *.crt
