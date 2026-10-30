@@ -124,8 +124,6 @@ export function AppRouter() {
         {/* Phase 8+ modules — placeholders */}
         <Route path="deployments" element={<ComingSoon module="Deployments" />} />
         <Route path="reports"     element={<ComingSoon module="Reports" />} />
-        <Route path="ai/alerts"   element={<ComingSoon module="AI Alerts" />} />
-        <Route path="ai/training" element={<ComingSoon module="AI Training Center" />} />
         <Route path="audit"       element={<ComingSoon module="Audit Logs" />} />
         <Route path="settings"    element={<ComingSoon module="Settings" />} />
 

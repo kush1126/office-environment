@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Building2, Mail, Users, Package, Archive,
   ShoppingCart, ShoppingBag, FileText, Receipt, CreditCard,
   TrendingUp, BarChart3, FolderOpen, Globe, Rocket, Bot,
-  BellRing, GraduationCap, ClipboardList, Settings, Boxes,
+  ClipboardList, Settings, Boxes,
   Briefcase, AlertTriangle, ChevronRight, Zap, Sparkles,
 } from 'lucide-react'
 
@@ -87,8 +87,6 @@ const NAV: NavSection[] = [
       { label: 'Reports',         to: '/reports',       icon: BarChart3,       permission: 'reports.read' },
       { label: 'AI Assistant',    to: '/ai',            icon: Bot,             permission: 'ai.read' },
       { label: 'AI Image Studio', to: '/ai/images',     icon: Sparkles,        permission: 'ai.read' },
-      { label: 'AI Alerts',       to: '/ai/alerts',     icon: BellRing,        permission: 'ai.read' },
-      { label: 'AI Training',     to: '/ai/training',   icon: GraduationCap,   permission: 'ai.train' },
     ],
   },
   {
